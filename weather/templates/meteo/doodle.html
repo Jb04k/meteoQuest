@@ -1,0 +1,39 @@
+{% extends "meteo/base.html" %}
+{% load static %}
+{% block content %}
+<div class="text-center">
+  <h2 class="mb-3">Doodle Game</h2>
+  <p class="lead">Draw freely on the canvas!</p>
+  <canvas id="doodleCanvas" width="600" height="300" class="border mb-3"
+    style="background: #fff url('{% static 'meteoquest/images/doodle-bg.png' %}') no-repeat center; background-size: cover;">
+  </canvas>
+  <br>
+  <button id="clearDoodle" class="btn btn-danger">Clear Canvas</button>
+  <br><br>
+  <a href="{% url 'home' %}" class="btn btn-secondary">Back to Menu</a>
+</div>
+<script>
+  const canvas = document.getElementById('doodleCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "#000";
+  ctx.lineCap = "round";
+  canvas.addEventListener('mousedown', e => {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+  });
+  canvas.addEventListener('mousemove', e => {
+      if (drawing) {
+          ctx.lineTo(e.offsetX, e.offsetY);
+          ctx.stroke();
+      }
+  });
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseleave', () => drawing = false);
+  document.getElementById('clearDoodle').addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "meteo/base.html" %}
+{% load static %}
+{% block content %}
+<div class="row mb-4">
+  <div class="col-md-6 offset-md-3">
+    <!-- Weather Card -->
+    <div class="card text-center shadow-sm mb-3">
+      <div class="card-body">
+        {% if weather.city %}
+          <h3 class="card-title">{{ weather.city }}</h3>
+          <p class="card-text">
+            Temperature: {{ weather.temperature }} °C<br>
+            <span class="text-capitalize">{{ weather.description }}</span>
+          </p>
+          <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather Icon">
+        {% else %}
+          <p class="card-text">Enter a city to get the latest weather update!</p>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Weather Search Form -->
+    <form method="post" class="mb-5">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.name }}
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Check Weather</button>
+    </form>
+  </div>
+</div>
+
+<!-- Game Menu Section -->
+<div class="row mb-4">
+  <div class="col text-center">
+    <h2 class="mb-4">Games Menu</h2>
+    <div class="btn-group btn-group-lg" role="group" aria-label="Game Menu">
+      <a href="{% url 'doodle_game' %}" class="btn btn-primary">Doodle Game</a>
+      <a href="{% url 'reaction_game' %}" class="btn btn-success">Reaction Game</a>
+      <a href="{% url 'puzzle_game' %}" class="btn btn-info">Puzzle Quiz</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

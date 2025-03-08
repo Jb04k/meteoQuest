@@ -1,0 +1,36 @@
+{% extends "meteo/base.html" %}
+{% block content %}
+<div class="text-center">
+  <h2 class="mb-3">Reaction Game</h2>
+  <p class="lead">Click the button as soon as the box turns green!</p>
+  <div id="reactionBox" class="mx-auto mb-3" style="width:200px; height:200px; background:#ccc;"></div>
+  <button id="reactionBtn" class="btn btn-success" disabled>Click Me!</button>
+  <p id="reactionResult" class="mt-2"></p>
+  <br>
+  <a href="{% url 'home' %}" class="btn btn-secondary">Back to Menu</a>
+</div>
+<script>
+  const reactionBox = document.getElementById('reactionBox');
+  const reactionBtn = document.getElementById('reactionBtn');
+  const reactionResult = document.getElementById('reactionResult');
+  let startTime;
+  function startReactionGame() {
+      reactionBtn.disabled = true;
+      reactionResult.textContent = "";
+      reactionBox.style.backgroundColor = "#ccc";
+      setTimeout(() => {
+          reactionBox.style.backgroundColor = "#28a745";
+          startTime = new Date().getTime();
+          reactionBtn.disabled = false;
+      }, Math.random() * 3000 + 2000);
+  }
+  reactionBtn.addEventListener('click', function() {
+      if (!startTime) return;
+      const reactionTime = new Date().getTime() - startTime;
+      reactionResult.textContent = "Your reaction time: " + reactionTime + " ms";
+      reactionBtn.disabled = true;
+      setTimeout(startReactionGame, 2000);
+  });
+  startReactionGame();
+</script>
+{% endblock %}
